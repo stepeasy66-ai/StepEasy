@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "219758098942",
+    "project_id": "stepeasy-5e5ae",
+    "storage_bucket": "stepeasy-5e5ae.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:219758098942:android:c859024d03ed55b64ae8af",
+        "android_client_info": {
+          "package_name": "uk.ac.tees.mad.stepeasy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBmzdn0dnr0IPStc_TF-UXXOZHOcr_yHg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
