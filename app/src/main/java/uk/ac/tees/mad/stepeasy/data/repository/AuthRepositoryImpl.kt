@@ -5,9 +5,11 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 import uk.ac.tees.mad.stepeasy.domain.model.UserData
 import uk.ac.tees.mad.stepeasy.domain.repository.AuthRepository
+import uk.ac.tees.mad.stepeasy.utils.PreferenceManager
 
 class AuthRepositoryImpl (private val firebaseAuth: FirebaseAuth ,
-    private val firebaseFirestore: FirebaseFirestore
+    private val firebaseFirestore: FirebaseFirestore ,
+    private val preferenceManager: PreferenceManager
 ): AuthRepository {
     override suspend fun signIn(
         email : String ,
@@ -18,6 +20,9 @@ class AuthRepositoryImpl (private val firebaseAuth: FirebaseAuth ,
                 .signInWithEmailAndPassword(email,password)
                 .await()
             response?.user?.uid?:throw Exception("User ID is null")
+            preferenceManager.setUserLoggedIn(true)
+            preferenceManager.setUserEmail(email)
+            preferenceManager.setLastLogin(System.currentTimeMillis())
             Result.success(Unit)
         }catch (e : Exception){
             Result.failure(e)
@@ -27,6 +32,8 @@ class AuthRepositoryImpl (private val firebaseAuth: FirebaseAuth ,
     override suspend fun signOut(): Result<Unit> {
         return try {
             firebaseAuth.signOut()
+            preferenceManager.setUserLoggedIn(false)
+            preferenceManager.setUserEmail("")
             Result.success(Unit)
         }catch (e : Exception){
             Result.failure(e)
@@ -57,6 +64,9 @@ class AuthRepositoryImpl (private val firebaseAuth: FirebaseAuth ,
                 response.user?.delete()?.await()
                 throw e
             }
+            preferenceManager.setUserLoggedIn(true)
+            preferenceManager.setUserEmail(email)
+            preferenceManager.setLastLogin(System.currentTimeMillis())
             Result.success(Unit)
         }catch (e :Exception){
             Result.failure(e)
